@@ -1,4 +1,4 @@
-package Plogger::Storage::Git;
+package Plogger::Storage::Plugin::Git;
 
 use Moose::Role;
 
@@ -47,11 +47,12 @@ __END__
 
 =head1 NAME
 
-Plogger::Storage::Git
+Plogger::Storage::Plugin::Git
 
 =head1 SYNOPSIS
 
-with 'Plogger::Storage::Git'
+use MooseX::Object::Pluggable;
+# From Storage.pm
 
 =head1 DESCRIPTION
 
