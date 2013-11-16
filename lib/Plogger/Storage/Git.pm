@@ -1,6 +1,6 @@
 package Plogger::Storage::Git;
 
-use Moose;
+use Moose::Role;
 
 use Git::Repository;
 
@@ -40,4 +40,37 @@ sub show_list {
 # @TODO: How to find the list the display
 #	@TODO: what format to send it out in. 
 }
+
+1;
+
+__END__
+
+=head1 NAME
+
+Plogger::Storage::Git
+
+=head1 SYNOPSIS
+
+with 'Plogger::Storage::Git'
+
+=head1 DESCRIPTION
+
+Git Plugin for Plogger Storage
+
+=head1 METHODS
+
+=head2 find
+
+find the object that is being searched for
+
+=head2 show
+
+get the content for the object that has been found
+
+=head2 show_list
+
+show a list of objects that have been asked for
+
+=cut
+
 

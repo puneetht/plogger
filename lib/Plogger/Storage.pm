@@ -1,18 +1,19 @@
 package Plogger::Storage;
 use Moose;
+use Carp qw (croak);
+
+with 'Plogger::Storage::Git';
 
 
-# @TODO: Figure out how to use the P:S:Git class here
-# 		Convert to Moose::Plugin?
+
+@TODO: Figure out how to make the module pluggable
 has _plugin => {
 	is		=> 'ro',
 	isa		=> 'Int',
-	builder => '_fetch_storage_plugin',
+	builder	=> '_fetch_storage_plugin',
 	lazy	=> 1,
-	handles => [ qw ( find show show_list ) ],
 };
 
-# @TODO: change builder into a plugin builder
 sub _fetch_storage_plugin {
 	my ($self) = @_;
 	
