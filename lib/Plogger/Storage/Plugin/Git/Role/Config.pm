@@ -1,4 +1,4 @@
-package Plogger::Storage::Git::Role::Config;
+package Plogger::Storage::Plugin::Git::Role::Config;
 
 use Moose::Role;
 
@@ -6,12 +6,10 @@ use Carp qw ( croak );
 
 use YAML;
 
-has _config_hash	=> {
+has _config_hash	=> (
 			is	=> 'ro',
-			isa	=> 'Str',
 			builder	=>	'_fetch_config_hash' ,
-			handles => [ qw (save get_config set_config ) ] ,
-};
+);
 
 sub _fetch_config_hash {
 	my $self = @_;
@@ -19,10 +17,12 @@ sub _fetch_config_hash {
 	my ($hashref) = Load( <<'YAML' ) ;
 git_dir: /Users/matt/storage/git_repos
 YAML
+
+
 	return $hashref;
 }
 
-sub save {
+sub save_config {
 	my ($self) = @_;
 	
 	#some code to save to a file
@@ -55,7 +55,7 @@ sub set_config {
 	return 1;
 }
 
-1
+1;
 
 __END__
 

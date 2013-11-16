@@ -2,22 +2,44 @@ package Plogger::Storage::Plugin::Git;
 
 use Moose::Role;
 
+use Carp qw ( croak );
 use Git::Repository;
+use Git::Repository::Command;
 
-has git_repostory => {
+with 'Plogger::Storage::Plugin::Git::Role::Config';
+
+
+# @TODO : read book's repo called perl secrets on github.com
+
+has _git_repository => (
 	is		=> 'ro',
 	isa		=> 'Git::Repository',
 	builder	=> '_fetch_git_repository',
 	lazy	=> 1,
-};
-
+);
 
 sub _fetch_git_repository {
 	my ($self) = @_;
+	my $git_dir = $self->get_config('git_dir');
 
-	return Git::Repository->new( git_dir	=> $self->get_config('git_dir') );
+	croak "$git_dir does not exist"  unless ( -d "$git_dir");
+
+	croak "Not  a git repo" unless ( -e "$git_dir/.git" );
+
+	return Git::Repository->new({ git_dir		=> $self->get_config('git_dir'),
+								   work_tree 	=> $self->get_config('work_tree'),
+								   fatal		=> '!0',
+							 	});
 	
 }
+
+sub find {
+	my ($self, $commit_sha)  = @_;
+	my $git_cmd = Git::Repository::Command::->new( { log => $commit_sha });
+	my @output = $self->_git_repository->run($git_cmd);
+	return @output;
+}
+
 
 sub save {
 	my ($self) = @_;
@@ -26,10 +48,7 @@ sub save {
 	return 1;	
 }
 
-sub find {
-#	@TODO: 	figure out the schema for how the we write to git.
-#			How we find out what parametesr are going to be used to decide
-}
+
 
 sub show {
 #	@TODO : figure what to show. and how to return.
